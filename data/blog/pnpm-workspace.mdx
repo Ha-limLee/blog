@@ -76,7 +76,7 @@ mkdir folder
 ls -1 | grep -v ${folder} | xargs -I % mv % ${folder}/%
 ```
 
-![move redux-legacy-1 folder](/static/images/monorepo/move-legacy-1.png)
+![move redux-legacy-1 folder](/static/images/pnpm-workspace/move-legacy-1.png)
 
 redux-legacy-1을 복사해 redux-legacy-2를 만든다
 
@@ -84,7 +84,7 @@ redux-legacy-1을 복사해 redux-legacy-2를 만든다
 cp -r packages/redux-legacy-1 packages/redux-legacy-2
 ```
 
-![copy redux-legacy-1 folder](/static/images/monorepo/copy-legacy-1.png)
+![copy redux-legacy-1 folder](/static/images/pnpm-workspace/copy-legacy-1.png)
 
 pnpm-workspace.yaml 파일을 만든다
 
@@ -128,7 +128,7 @@ cd packages/redux-legacy-1 && pnpm import && cd ../..
 
 workspace에 pnpm-lock.yaml이 생긴 걸 볼 수 있다
 
-![pnpm import](/static/images/monorepo/pnpm-import.png)
+![pnpm import](/static/images/pnpm-workspace/pnpm-import.png)
 
 이제 yarn.lock 파일은 필요 없으니 지운다
 
@@ -146,7 +146,11 @@ workspace와 각 package에 node_modules가 생긴 걸 볼 수 있다
 
 두 package 중 하나로 가서 `pnpm start`를 입력하면 CRA를 실행할 수 있다
 
-![pnpm start](/static/images/monorepo/pnpm-start.png)
+![pnpm start](/static/images/pnpm-workspace/pnpm-start.png)
+
+❗ workspace에 있는 .gitignore에 `node_modules/`를 추가해야 package에 있는 node_modules를 커밋에서 제외할 수 있다
+
+
 
 # References
 
