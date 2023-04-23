@@ -57,17 +57,7 @@ $ yarn add -D @types/react-redux @types/redux-actions
 
 # Sample App
 
-간단한 앱을 만들어 보자
-
-시나리오는 다음과 같다
-
-1. 버튼을 클릭한다
-2. action을 dispatch
-3. watcher saga가 action 감지
-4. worker saga 실행
-5. api call
-6. 결과값을 store에 저장
-7. store 변경에 따라 re-rendering
+간단한 Todo 앱을 만들어보자
 
 fetch code 작성
 
@@ -104,11 +94,9 @@ import { createAction } from "redux-actions";
  * @typedef {import("./api").Todo} Todo
  */
 
-export const GET_TODO = 'GET_TODO';
-export const getTodo = createAction(GET_TODO);
-
 export const SET_TODO = 'SET_TODO';
 export const setTodo = /** @type {typeof createAction<Todo>} */ (createAction)(SET_TODO);
+
 ```
 
 reducer 작성
@@ -118,7 +106,7 @@ reducer 작성
 
 // @ts-check
 import { handleActions } from "redux-actions";
-import { ADD_TODO } from "./action";
+import { SET_TODO } from "./action";
 
 /**
  * @typedef {import("./api").Todo} Todo
@@ -130,7 +118,7 @@ const initialState = {
 
 export default handleActions(
   {
-    [ADD_TODO]: (state, { payload }) => {
+    [SET_TODO]: (state, { payload }) => {
       const { todoList } = state;
       return {
         ...state,
