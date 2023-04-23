@@ -1,0 +1,43 @@
+---
+title: redux legacy에 타입 적용하기 - 2
+date: '2023-04-23'
+tags: ['redux-legacy', 'jsdoc']
+draft: true
+summary: union action type 다루기
+images: []
+layout: PostLayout
+authors: ['default']
+---
+
+# Overview
+
+<TOCInline toc={props.toc} exclude="Overview" toHeading={2} />
+
+# Introduction
+
+[저번 시간](/blog/redux-legacy)에는 redux legacy 환경에서 간단한 타입을 적용해봤다
+
+이번에는 reducer에서 union action type을 처리해보자
+
+# Objective
+
+- handleActions에서 union action type을 적용
+
+# Use case
+
+저번 action 코드를 보자
+
+```js
+// @ts-check
+import { createAction } from "redux-actions";
+
+/**
+ * @typedef {import("./api").Todo} Todo
+ */
+
+export const SET_TODO = 'Todo/ADD_TODO';
+export const setTodo = /** @type {typeof createAction<Todo>} */ (createAction)(SET_TODO);
+
+```
+
+
