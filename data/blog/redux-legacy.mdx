@@ -113,17 +113,19 @@ import { SET_TODO } from "./action";
  * @typedef {import("./api").Todo} Todo
  */
 
-const initialState = {
-  todoList: /** @type {Todo[]} */ ([]),
-};
+/**
+ * @typedef {{ [id: Pick<Todo, 'id'>['id']]: Todo }} InitialState
+ */
+
+/** @type {InitialState} */
+const initialState = {};
 
 export default handleActions(
   {
     [SET_TODO]: (state, { payload }) => {
-      const { todoList } = state;
       return {
         ...state,
-        todoList: [...todoList, payload]
+        [payload.id]: { ...payload },
       };
     },
   },
@@ -134,11 +136,11 @@ export default handleActions(
 
 이렇게 하면 타입이 이상하게 잡힌다
 
-`payload`로 원하는 타입은 `Todo`인데 `handleActions`는 타입을 `Todo[]`로 잡고 있다
+`payload`로 원하는 타입은 `Todo`인데 `handleActions`는 타입을 `InitialState`로 잡고 있다
 
 ![reducer type error](/static/images/redux-legacy/reducer-type-error.png)
 
-이건 `handleActions`가 기본적으로 `initialState`의 prop과 같은 타입을 `payload`로 지정하기 때문이다
+이건 `handleActions`가 기본적으로 `initialState`와 같은 타입을 `payload`로 지정하기 때문이다
 
 ```ts
 // node_modules\@types\redux-actions\index.d.ts:169
@@ -154,17 +156,7 @@ export function handleActions<StateAndPayload>(
 `handleActions`에 State와 Payload 타입을 주자
 
 ```diff
-// @ts-check
-import { handleActions } from "redux-actions";
-import { ADD_TODO } from "./action";
-
-/**
- * @typedef {import("./api").Todo} Todo
- */
-
-const initialState = {
-  todoList: /** @type {Todo[]} */ ([]),
-};
+...
 
 + const handleTodoActions =
 +   /** @type {typeof handleActions<typeof initialState, Todo>} */ (handleActions);
@@ -173,10 +165,9 @@ const initialState = {
 + export default handleTodoActions(
   {
     [ADD_TODO]: (state, { payload }) => {
-      const { todoList } = state;
       return {
         ...state,
-        todoList: [...todoList, payload]
+        [payload.id]: { ...payload },
       };
     },
   },
