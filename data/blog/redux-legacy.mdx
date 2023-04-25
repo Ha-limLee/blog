@@ -164,7 +164,7 @@ export function handleActions<StateAndPayload>(
 - export default handleActions(
 + export default handleTodoActions(
   {
-    [ADD_TODO]: (state, { payload }) => {
+    [SET_TODO]: (state, { payload }) => {
       return {
         ...state,
         [payload.id]: { ...payload },
