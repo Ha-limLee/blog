@@ -276,11 +276,6 @@ import { legacy_createStore as createStore } from "redux";
 import reducers from "../features/reducers";
 
 /**
- * @typedef {import("redux").Store<State, Action>} Store
- * @typedef {import("redux").AnyAction} AnyAction
- */
-
-/**
  * @template S
  * @template {AnyAction} A
  * @typedef {import("redux").Reducer<S, A>} Reducer
@@ -301,6 +296,11 @@ import reducers from "../features/reducers";
 /**
  * @typedef {ExtractState<typeof reducers>} State
  * @typedef {ExtractAction<typeof reducers>} Action
+ */
+
+/**
+ * @typedef {import("redux").Store<State, Action>} Store
+ * @typedef {import("redux").AnyAction} AnyAction
  */
 
 /** @type {Store} */
