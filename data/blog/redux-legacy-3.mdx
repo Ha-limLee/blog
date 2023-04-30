@@ -1,0 +1,40 @@
+---
+title: redux legacy에 타입 적용하기 - 3
+date: '2023-04-30'
+tags: ['redux-legacy', 'jsdoc']
+draft: true
+summary: generic handleActions
+images: []
+layout: PostSimple
+authors: ['default']
+---
+
+# Overview
+
+<TOCInline toc={props.toc} exclude="Overview" toHeading={2} />
+
+# Introduction
+
+[저번 시간](/blog/redux-legacy-2)에는 union payload type을 처리하는 방법에 대해서 알아보았다
+
+이번에는 저번에 작성한 `handleTodoActions`를 `generic`하게 만들어보자
+
+# Objective
+
+- generic한 handleActions 작성
+
+# Refactoring
+
+`src/features/todo/action.js`
+
+```js
+/**
+ * @template T
+ * @typedef {{
+ *  [SET_TODO]: (state: T, action: ReturnType<typeof setTodo>) => T;
+ *  [REMOVE_TODO]: (state: T, action: ReturnType<typeof removeTodo>) => T;
+ * }} TodoReducerMap
+ */
+```
+
+이 코드에는 중복이 많다
