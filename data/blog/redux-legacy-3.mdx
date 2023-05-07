@@ -397,3 +397,50 @@ index f22f673..b8b1c1b 100644
 dispatch해도 타입 오류가 발생하지 않는다
 
 <ImageFromStatic name="dispatch-removeUser" />
+
+# Avoid Hard Coding
+
+payload의 타입을 하드코딩 하고 있는데 이런 방식은 좋지 않다
+
+action이 바뀔 수 있기 때문이다
+
+action 생성자에 ReturnType을 적용해 타입을 유도하자
+
+```diff
+diff --git a/packages/redux-legacy-3/src/features/user/reducer.js b/packages/redux-legacy-3/src/features/user/reducer.js
+index b8b1c1b..dc81add 100644
+--- a/packages/redux-legacy-3/src/features/user/reducer.js
++++ b/packages/redux-legacy-3/src/features/user/reducer.js
+@@ -1,6 +1,6 @@
+ // @ts-check
+ import { handleActions } from "../../app/actions";
+-import { EDIT_USER, REMOVE_USER } from "./action";
++import { editUser, EDIT_USER, removeUser, REMOVE_USER } from "./action";
+
+ /**
+  * @typedef {Object} User
+@@ -16,14 +16,15 @@ const initialState = {
+
+ export default handleActions(
+   {
+-    [EDIT_USER]: (state
+-      , /** @type {{payload: User}} */ { payload }) => {
++    [EDIT_USER]: (state,
++      /** @type {ReturnType<editUser>} */ { payload }) => {
+       return {
+         ...state,
+         userName: payload.userName,
+       }
+     },
+-    [REMOVE_USER]: (state, /** @type {{payload: Pick<User, 'userId'>}} */ { payload }) => {
++    [REMOVE_USER]: (state,
++      /** @type {ReturnType<removeUser>} */ { payload }) => {
+       delete state[payload.userId];
+       return {
+         ...state,
+
+```
+
+# References
+
+[TypeScript 최신 기능을 활용한 Redux 액션 타이핑](https://medium.com/@seungha_kim_IT/typescript-%EC%B5%9C%EC%8B%A0-%EA%B8%B0%EB%8A%A5%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%9C-redux-%EC%95%A1%EC%85%98-%ED%83%80%EC%9D%B4%ED%95%91-ef46fff8850b)
