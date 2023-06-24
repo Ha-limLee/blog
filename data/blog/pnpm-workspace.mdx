@@ -5,7 +5,7 @@ tags: ['pnpm', 'workspace', 'monorepo']
 draft: false
 summary: 여러 react 프로젝트를 monorepo로 관리
 images: []
-layout: PostLayout
+layout: PostSimple
 authors: ['default']
 ---
 
@@ -46,6 +46,7 @@ npm install -g pnpm
 ```shell
 pnpm -v
 ```
+
 ```
 $ pnpm -v
 8.3.1
@@ -149,8 +150,6 @@ workspace와 각 package에 node_modules가 생긴 걸 볼 수 있다
 ![pnpm start](/static/images/pnpm-workspace/pnpm-start.png)
 
 ❗ workspace에 있는 .gitignore에 `node_modules/`를 추가해야 package에 있는 node_modules를 커밋에서 제외할 수 있다
-
-
 
 # References
 

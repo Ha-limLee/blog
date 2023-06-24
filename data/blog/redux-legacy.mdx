@@ -5,7 +5,7 @@ tags: ['redux-legacy', 'jsdoc']
 draft: false
 summary: jsdoc을 이용한 타입 적용
 images: ['/static/images/store-type-complete.png']
-layout: PostLayout
+layout: PostSimple
 authors: ['default']
 ---
 
@@ -22,6 +22,7 @@ redux 개발진은 redux toolkit(RTK)이라는 새로운 방식을 열심히 홍
 ![createStore deprecated](/static/images/redux-legacy/deprecated.png)
 
 개발진은 RTK가 기존 redux(이하 redux legacy)에 비해서 여러 장점이 있다고 한다
+
 - TypeScript를 제대로 쓸 수 있고
 - Boilerplate를 제거하며
 - RTK Query를 사용해 Data fetching을 쉽게 할 수 있고
@@ -77,10 +78,10 @@ fetch code 작성
  * @param {number} id
  */
 export const getTodo = async (id) => {
-    const res = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`);
-    /** @type {Todo} */
-    const data = await res.json();
-    return data;
+  const res = await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`)
+  /** @type {Todo} */
+  const data = await res.json()
+  return data
 }
 ```
 
@@ -89,15 +90,14 @@ action 작성
 ```js
 // src\features\todo\action.js
 
-import { createAction } from "redux-actions";
+import { createAction } from 'redux-actions'
 
 /**
  * @typedef {import("./api").Todo} Todo
  */
 
-export const SET_TODO = 'SET_TODO';
-export const setTodo = /** @type {typeof createAction<Todo>} */ (createAction)(SET_TODO);
-
+export const SET_TODO = 'SET_TODO'
+export const setTodo = /** @type {typeof createAction<Todo>} */ (createAction)(SET_TODO)
 ```
 
 reducer 작성
@@ -106,8 +106,8 @@ reducer 작성
 // src\features\todo\reducer.js
 
 // @ts-check
-import { handleActions } from "redux-actions";
-import { SET_TODO } from "./action";
+import { handleActions } from 'redux-actions'
+import { SET_TODO } from './action'
 
 /**
  * @typedef {import("./api").Todo} Todo
@@ -118,7 +118,7 @@ import { SET_TODO } from "./action";
  */
 
 /** @type {InitialState} */
-const initialState = {};
+const initialState = {}
 
 export default handleActions(
   {
@@ -126,12 +126,11 @@ export default handleActions(
       return {
         ...state,
         [payload.id]: { ...payload },
-      };
+      }
     },
   },
-  initialState,
-);
-
+  initialState
+)
 ```
 
 이렇게 하면 타입이 이상하게 잡힌다
@@ -146,11 +145,10 @@ export default handleActions(
 // node_modules\@types\redux-actions\index.d.ts:169
 
 export function handleActions<StateAndPayload>(
-    reducerMap: ReducerMap<StateAndPayload, StateAndPayload>,
-    initialState: StateAndPayload,
-    options?: Options
-): ReduxCompatibleReducer<StateAndPayload, StateAndPayload>;
-
+  reducerMap: ReducerMap<StateAndPayload, StateAndPayload>,
+  initialState: StateAndPayload,
+  options?: Options
+): ReduxCompatibleReducer<StateAndPayload, StateAndPayload>
 ```
 
 `handleActions`에 State와 Payload 타입을 주자
@@ -184,23 +182,22 @@ export function handleActions<StateAndPayload>(
 // src\features\user\action.js
 
 // @ts-check
-import { createAction } from "redux-actions";
+import { createAction } from 'redux-actions'
 
 /**
  * @typedef {import("./reducer").User} User
  */
 
-export const EDIT_USER = 'User/EDIT_USER';
-export const editUser = /** @type {typeof createAction<User>} */ (createAction)(EDIT_USER);
-
+export const EDIT_USER = 'User/EDIT_USER'
+export const editUser = /** @type {typeof createAction<User>} */ (createAction)(EDIT_USER)
 ```
 
 ```js
 // src\features\user\reducer.js
 
 // @ts-check
-import { handleActions } from "redux-actions";
-import { EDIT_USER } from "./action";
+import { handleActions } from 'redux-actions'
+import { EDIT_USER } from './action'
 
 /**
  * @typedef {Object} User
@@ -212,7 +209,7 @@ import { EDIT_USER } from "./action";
 const initialState = {
   userId: 1,
   userName: 'James',
-};
+}
 
 export default handleActions(
   {
@@ -223,9 +220,8 @@ export default handleActions(
       }
     },
   },
-  initialState,
-);
-
+  initialState
+)
 ```
 
 두 reducer를 `combineReducers`로 내보낸다
@@ -233,15 +229,14 @@ export default handleActions(
 ```js
 // src\features\reducers.js
 
-import { combineReducers } from 'redux';
-import todoReducer from './todo/reducer';
-import userReducer from './user/reducer';
+import { combineReducers } from 'redux'
+import todoReducer from './todo/reducer'
+import userReducer from './user/reducer'
 
 export default combineReducers({
   todoReducer,
   userReducer,
-});
-
+})
 ```
 
 store에 등록한다
@@ -249,13 +244,12 @@ store에 등록한다
 ```js
 // src\store.js
 
-import { createStore } from "redux";
-import reducers from "./features/reducers";
+import { createStore } from 'redux'
+import reducers from './features/reducers'
 
-const store = createStore(reducers);
+const store = createStore(reducers)
 
-export default store;
-
+export default store
 ```
 
 여기서 문제가 발생한다
@@ -272,8 +266,8 @@ store 타입이 `any`다
 // src\app\store.js
 
 // @ts-check
-import { legacy_createStore as createStore } from "redux";
-import reducers from "../features/reducers";
+import { legacy_createStore as createStore } from 'redux'
+import reducers from '../features/reducers'
 
 /**
  * @template S
@@ -304,10 +298,9 @@ import reducers from "../features/reducers";
  */
 
 /** @type {Store} */
-const store = createStore(reducers);
+const store = createStore(reducers)
 
-export default store;
-
+export default store
 ```
 
 드디어 store의 타입이 제대로 나온다!
@@ -338,7 +331,7 @@ export default store;
 ```js
 // src\app\hooks.js
 
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 /**
  * @typedef {import("./store").RootState} RootState
@@ -346,11 +339,10 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
  */
 
 /** @type {() => AppDispatch} */
-export const useAppDispatch = useDispatch;
+export const useAppDispatch = useDispatch
 
 /** @type {TypedUseSelectorHook<RootState>} */
-export const useAppSelector = useSelector;
-
+export const useAppSelector = useSelector
 ```
 
 이 고생을 한 이유를 이제야 알 수 있다
@@ -364,6 +356,7 @@ export const useAppSelector = useSelector;
 ![selector type infer](/static/images/redux-legacy/selector-type-infer.png)
 
 # References
+
 [^1]: [TypeScript — Extract/Unpack a Type from a Generic](https://itnext.io/typescript-extract-unpack-a-type-from-a-generic-baca7af14e51)
 [^2]: [Define Root State and Dispatch Types](https://react-redux.js.org/tutorials/typescript-quick-start#define-root-state-and-dispatch-types)
 [^3]: [Define Typed Hooks](https://react-redux.js.org/tutorials/typescript-quick-start#define-typed-hooks)
