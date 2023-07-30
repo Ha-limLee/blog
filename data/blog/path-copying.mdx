@@ -149,6 +149,20 @@ count += dfs(point1, board, newVisited)
 
 Julia나 Clojure 같은 함수형 언어들은 순수하지 않은 함수를 나타내기 위해 함수 이름 끝에 느낌표를 붙인다
 
+```js
+const dfs! = (point, board, visited) => {
+  ...
+};
+```
+
+그러나 JavaScript는 느낌표를 이름에 쓸 수 없다
+
+대신 swift guideline을 따라 이렇게 이름을 지을 수 있다
+
+`useDfs` : 비순수 함수
+
+`usingDfs` : 순수 함수
+
 ## Mutate type
 
 위에서 언급한 방법들만으론 부족하다
@@ -191,9 +205,15 @@ const dfs = (point, board, visited, cb) => {
 };
 ```
 
-# Path Copying
+프로젝트 내부적으로 매개변수를 변경하려면 반드시 Mutable을 사용한다는 규칙이 있다면 더욱 좋다
 
-store passing style은 함수형이 아닌 언어에서 순수 함수를 구현하는 방법 중 하나다
+그러면 영희는 함수 시그니처만 보고 dfs 사용법을 추론할 수 있게 된다
+
+1. dfs가 아무것도 반환하지 않기 때문에 이 함수가 비순수 함수임을 알고
+
+2. 매개변수 중 visited가 Mutable 타입이므로 visited만 변경될 것임을 안다
+
+따라서 dfs를 여러 번 사용할 때 visited를 공유하는 실수를 저지르지 않을 것이다
 
 # References
 
@@ -202,3 +222,6 @@ store passing style은 함수형이 아닌 언어에서 순수 함수를 구현�
 [Signature (functions)](https://developer.mozilla.org/ko/docs/Glossary/Signature/Function)
 [Mutable type](https://github.com/microsoft/TypeScript/issues/24509)
 [Unsafe Functions](https://github.com/bbatsov/clojure-style-guide#naming-unsafe-functions)
+[How to distinguish mutating and pure functions in javascript?](https://stackoverflow.com/questions/67847038/how-to-distinguish-mutating-and-pure-functions-in-javascript)
+[Strive for Fluent Usage](https://www.swift.org/documentation/api-design-guidelines/#strive-for-fluent-usage)
+[Command–query separation](https://en.wikipedia.org/wiki/Command%E2%80%93query_separation)
