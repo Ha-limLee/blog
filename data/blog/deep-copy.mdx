@@ -154,10 +154,10 @@ console.timeEnd('structuredClone') // structuredClone: 2.549s
 ```js
 /**
 단순 재귀 복사
+얕은 복사를 반복
 @template T
 @param {T} obj
-@returns {T}
- */
+@returns {T} */
 const recursiveClone = (obj) => {
   if (!obj[Symbol.iterator]) return obj
   const cloned = obj.constructor(...obj)
