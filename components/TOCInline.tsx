@@ -9,6 +9,40 @@ interface TOCInlineProps {
   exclude?: string | string[];
 }
 
+interface TocListProps {
+  filteredToc: Toc;
+  indentDepth: number;
+}
+
+const TocList = ({ filteredToc, indentDepth }: TocListProps) => {
+  const headings = [];
+  const minDepth = filteredToc.reduce(
+    (prev, curr) => (curr.depth < prev ? curr.depth : prev),
+    filteredToc[0].depth
+  );
+  for (let i = 0; i < filteredToc.length; ) {
+    const heading = filteredToc[i];
+    if (heading.depth > minDepth) {
+      const subHeadings: Toc = [];
+      do {
+        subHeadings.push(filteredToc[i++]);
+      } while (i < filteredToc.length && filteredToc[i].depth > minDepth);
+      headings.push(<TocList filteredToc={subHeadings} indentDepth={indentDepth} />);
+    } else {
+      headings.push(
+        <li
+          key={`${heading.value}_${heading.depth}`}
+          className={`${heading.depth >= indentDepth && 'ml-6'}`}
+        >
+          <a href={heading.url}>{heading.value}</a>
+        </li>
+      );
+      i += 1;
+    }
+  }
+  return <ul>{headings}</ul>;
+};
+
 /**
  * Generates an inline table of contents
  * Exclude titles matching this string (new RegExp('^(' + string + ')$', 'i')).
@@ -41,15 +75,7 @@ const TOCInline = ({
       heading.depth >= fromHeading && heading.depth <= toHeading && !re.test(heading.value)
   );
 
-  const tocList = (
-    <ul>
-      {filteredToc.map((heading) => (
-        <li key={heading.value} className={`${heading.depth >= indentDepth && 'ml-6'}`}>
-          <a href={heading.url}>{heading.value}</a>
-        </li>
-      ))}
-    </ul>
-  );
+  const tocList = <TocList filteredToc={filteredToc} indentDepth={indentDepth} />;
 
   return (
     <>
