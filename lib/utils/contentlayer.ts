@@ -42,10 +42,10 @@ export const omit = <Obj, Keys extends keyof Obj>(obj: Obj, keys: Keys[]): Omit<
   return result;
 };
 
-export type CoreContent<T> = Omit<T, 'body' | '_raw' | '_id'>;
+export type CoreContent<T> = Omit<T, '_raw' | '_id'>;
 
 export function coreContent<T extends DocumentTypes>(content: T) {
-  return omit(content, ['body', '_raw', '_id']);
+  return omit(content, ['_raw', '_id']);
 }
 
 export function allCoreContent<T extends DocumentTypes>(contents: T[]) {
