@@ -3,6 +3,15 @@ import { visit } from 'unist-util-visit';
 import sizeOf from 'image-size';
 import fs from 'fs';
 
+const removePublicInUrl = (node: ImageNode): ImageNode => {
+  return node.url.startsWith('/public')
+    ? {
+        ...node,
+        url: node.url.replace('/public', ''),
+      }
+    : node;
+};
+
 type ImageNode = Parent & {
   url: string;
   alt: string;
@@ -18,7 +27,11 @@ export default function remarkImgToJsx() {
       (node: Parent): node is Parent =>
         node.type === 'paragraph' && node.children.some((n) => n.type === 'image'),
       (node: Parent) => {
-        const imageNode = node.children.find((n) => n.type === 'image') as ImageNode;
+        const imageNode = ([node.children.find((n) => n.type === 'image') as ImageNode] as const)
+          // vscode's markdown preview doesn't understand nextjs' public path.
+          // So I used paths like /public/static/**/* in mdx to see images in preview.
+          // Since it broke nextjs, remove first /public word here.
+          .map(removePublicInUrl)[0];
 
         // only local files
         if (fs.existsSync(`${process.cwd()}/public${imageNode.url}`)) {
