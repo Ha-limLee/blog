@@ -270,6 +270,28 @@ const roar = <K extends keyof CharacterMap>(character: Character<K>) => {
 
 코드는 [여기](https://gist.github.com/Ha-limLee/3312467ba9e43359ff6809e6013da0a9#file-correlated-union-ts)에서 볼 수 있다
 
+# 결론
+
+## 장점
+
+- 타입 건전함
+
+  타입 단언이 없기 때문에 런타임 오류를 걱정하지 않아도 된다
+
+## 단점
+
+- 직관성이 떨어진다
+
+- 처음부터 계획해야 한다
+
+  확장을 염두하고 처음부터 distributive object type을 만들어야 한다
+
+  그렇지 않으면 나중에 코드를 다 고쳐야 한다
+
+이미 union이 존재한다면 타입 단언을 하고 테스트 코드를 작성하는 식으로 넘어가고 나중에 코드를 수정할 것 같다
+
+다행히 correlated union을 만드는 작업은 타입만 수정하면 돼서 런타임 걱정은 안 해도 된다
+
 # References
 
 - [Wishlist: support for correlated union types](https://github.com/microsoft/TypeScript/issues/30581)
