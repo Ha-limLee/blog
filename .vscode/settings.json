@@ -1,5 +1,10 @@
 {
   "files.associations": {
     "*.mdx": "markdown"
-  }
+  },
+  "pasteImage.showFilePathConfirmInputBox": true,
+  "pasteImage.path": "${projectRoot}/public/static/images/${currentFileNameWithoutExt}",
+  "pasteImage.basePath": "${projectRoot}",
+  "pasteImage.forceUnixStyleSeparator": true,
+  "pasteImage.prefix": "/"
 }
