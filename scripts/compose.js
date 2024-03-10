@@ -48,6 +48,9 @@ const genFrontMatter = (answers) => {
 
   frontMatter = frontMatter + '\n---';
 
+  if (answers.toc === 'yes')
+    frontMatter += '\n<TOCInline toc={props.toc} exclude="Overview" toHeading={2} />';
+
   return frontMatter;
 };
 
@@ -91,6 +94,12 @@ inquirer
       message: 'Select layout',
       type: 'list',
       choices: getLayouts,
+    },
+    {
+      name: 'toc',
+      message: 'Add TOC?',
+      type: 'list',
+      choices: ['yes', 'no'],
     },
   ])
   .then((answers) => {
