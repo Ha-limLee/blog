@@ -9,9 +9,9 @@ layout: PostSimple
 authors: ['default']
 ---
 
-export const IMAGE_PATH = '/static/images/redux-legacy-3'
+export const IMAGE_PATH = '/static/images/redux-legacy-3';
 
-export const ImageFromStatic = ({ name }) => <img src={`${IMAGE_PATH}/${name}.png`} alt={name} />
+export const ImageFromStatic = ({ name }) => <img src={`${IMAGE_PATH}/${name}.png`} alt={name} />;
 
 # Overview
 
@@ -165,8 +165,8 @@ _src/app/actions.js_
 
 ```js
 // @ts-check
-import { handleAction } from 'redux-actions'
-import { combineReducers } from 'redux'
+import { handleAction } from 'redux-actions';
+import { combineReducers } from 'redux';
 
 /**
  * @template S, P
@@ -185,13 +185,13 @@ import { combineReducers } from 'redux'
  * @param {S} initialState
  */
 export const handleActions = (reducerMap, initialState) => {
-  const actionTypes = Object.keys(reducerMap)
+  const actionTypes = Object.keys(reducerMap);
   const reducers = actionTypes.reduce((acc, actionType) => {
-    const reducer = reducerMap[actionType]
-    acc[actionType] = handleAction(actionType, reducer, initialState)
-    return acc
-  }, {})
-  const ret = combineReducers(reducers)
+    const reducer = reducerMap[actionType];
+    acc[actionType] = handleAction(actionType, reducer, initialState);
+    return acc;
+  }, {});
+  const ret = combineReducers(reducers);
 
   /**
    * @template T
@@ -211,8 +211,8 @@ export const handleActions = (reducerMap, initialState) => {
    * } Payloads
    */
 
-  return /** @type {ReduxCompatibleReducer<S, Payloads>} */ (ret)
-}
+  return /** @type {ReduxCompatibleReducer<S, Payloads>} */ (ret);
+};
 ```
 
 더이상 불필요한 코드를 제거한다

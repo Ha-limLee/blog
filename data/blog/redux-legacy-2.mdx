@@ -9,9 +9,9 @@ layout: PostSimple
 authors: ['default']
 ---
 
-export const IMAGE_PATH = '/static/images/redux-legacy-2'
+export const IMAGE_PATH = '/static/images/redux-legacy-2';
 
-export const ImageFromStatic = ({ name }) => <img src={`${IMAGE_PATH}/${name}.png`} alt={name} />
+export const ImageFromStatic = ({ name }) => <img src={`${IMAGE_PATH}/${name}.png`} alt={name} />;
 
 # Overview
 
@@ -37,23 +37,23 @@ export const ImageFromStatic = ({ name }) => <img src={`${IMAGE_PATH}/${name}.pn
 
 ```js
 // @ts-check
-import { createAction } from 'redux-actions'
+import { createAction } from 'redux-actions';
 
 /**
  * @typedef {import("./api").Todo} Todo
  */
 
-export const SET_TODO = 'Todo/ADD_TODO'
-export const setTodo = /** @type {typeof createAction<Todo>} */ (createAction)(SET_TODO)
+export const SET_TODO = 'Todo/ADD_TODO';
+export const setTodo = /** @type {typeof createAction<Todo>} */ (createAction)(SET_TODO);
 ```
 
 여기에 Todo를 삭제하는 액션을 추가하자
 
 ```js
-export const REMOVE_TODO = 'Todo/REMOVE_TODO'
+export const REMOVE_TODO = 'Todo/REMOVE_TODO';
 export const removeTodo = /** @type {typeof createAction<Pick<Todo, 'id'>['id']>} */ (createAction)(
   REMOVE_TODO
-)
+);
 ```
 
 `Pick<Todo, 'id'>['id']`는 `number`다
@@ -150,14 +150,14 @@ function reducer(state, { type, payload }) {
       return {
         ...state,
         [payload.id]: { ...payload },
-      }
+      };
     case 'Todo/REMOVE_TODO':
-      delete state[payload]
+      delete state[payload];
       return {
         ...state,
-      }
+      };
     default:
-      return state
+      return state;
   }
 }
 ```
@@ -213,7 +213,7 @@ export function handleActions<State, Payload>(
   reducerMap: ReducerMap<State, Payload>,
   initialState: State,
   options?: Options
-): ReduxCompatibleReducer<State, Payload>
+): ReduxCompatibleReducer<State, Payload>;
 ```
 
 return type은 `ReduxCompatibleReducer<State, Payload>`이다
@@ -229,14 +229,14 @@ return type은 `ReduxCompatibleReducer<State, Payload>`이다
  * @param {S} initialState
  */
 const handleTodoActions = (reducerMap, initialState) => {
-  const actionTypes = Object.keys(reducerMap)
+  const actionTypes = Object.keys(reducerMap);
   const reducers = actionTypes.reduce((acc, actionType) => {
-    const reducer = reducerMap[actionType]
-    acc[actionType] = handleAction(actionType, reducer, initialState)
-    return acc
-  }, {})
+    const reducer = reducerMap[actionType];
+    acc[actionType] = handleAction(actionType, reducer, initialState);
+    return acc;
+  }, {});
 
-  const ret = combineReducers(reducers)
+  const ret = combineReducers(reducers);
 
   /**
    * @template T
@@ -254,8 +254,8 @@ const handleTodoActions = (reducerMap, initialState) => {
    * } Payloads
    */
 
-  return /** @type {ReduxCompatibleReducer<S, Payloads>} */ (ret)
-}
+  return /** @type {ReduxCompatibleReducer<S, Payloads>} */ (ret);
+};
 ```
 
 마지막에 type assertion으로 union payload가 들어가도록 했다
