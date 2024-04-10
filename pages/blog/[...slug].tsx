@@ -35,6 +35,7 @@ export const getStaticProps = async ({ params }) => {
       authorDetails,
       prev,
       next,
+      posts: sortedPosts,
     },
   };
 };
@@ -44,6 +45,7 @@ export default function Blog({
   authorDetails,
   prev,
   next,
+  posts,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
@@ -55,6 +57,7 @@ export default function Blog({
           authorDetails={authorDetails}
           prev={prev}
           next={next}
+          posts={posts}
         />
       ) : (
         <div className="mt-24 text-center">

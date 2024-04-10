@@ -8,6 +8,7 @@ import TOCInline from './TOCInline';
 import Pre from './Pre';
 import { BlogNewsletterForm } from './NewsletterForm';
 import type { Blog, Authors } from 'contentlayer/generated';
+import Series from './Series';
 
 interface MDXLayout {
   layout: string;
@@ -32,6 +33,7 @@ export const MDXComponents = {
   pre: Pre,
   wrapper: Wrapper,
   BlogNewsletterForm,
+  Series,
 };
 
 export const MDXLayoutRenderer = ({ layout, content, ...rest }: MDXLayout) => {
